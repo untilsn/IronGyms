@@ -1,0 +1,65 @@
+# =========================
+# Node modules (all projects)
+# =========================
+client/node_modules/
+server/node_modules/
+admin/node_modules/
+
+# hoặc dùng cách tổng quát:
+**/node_modules/
+
+# =========================
+# Env files
+# =========================
+.env
+.env.*
+client/.env*
+server/.env*
+admin/.env*
+
+# =========================
+# Logs
+# =========================
+*.log
+logs/
+
+# =========================
+# Build files
+# =========================
+client/dist/
+client/build/
+admin/dist/
+admin/build/
+server/dist/
+
+# =========================
+# Cache
+# =========================
+.cache/
+.vite/
+.next/
+
+# =========================
+# OS
+# =========================
+.DS_Store
+Thumbs.db
+
+# =========================
+# IDE
+# =========================
+.vscode/
+.idea/
+
+# =========================
+# Runtime
+# =========================
+*.pid
+*.pid.lock
+
+# =========================
+# Lock files (⚠️ cân nhắc)
+# =========================
+# package-lock.json
+# pnpm-lock.yaml
+# yarn.lock
