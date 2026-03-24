@@ -10,5 +10,4 @@ const env = {
   ACCESS_TOKEN: process.env.JWT_ACCESS_SECRET,
   REFRESH_TOKEN: process.env.JWT_REFRESH_SECRET,
 };
-
 export default env;

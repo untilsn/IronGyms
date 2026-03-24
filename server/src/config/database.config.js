@@ -16,9 +16,7 @@ const dbPath = path.join(__dirname, "../db/iron_gyms.db");
 
 // mở kết nối tới file SQLite
 // verbose: console.log → in ra terminal mọi câu SQL khi chạy (chỉ dùng khi dev)
-const db = new Database(dbPath, {
-  verbose: env.NODE_ENV === "development" ? console.log : null,
-});
+const db = new Database(dbPath);
 
 // cho phép đọc và ghi đồng thời, tăng performance
 db.pragma("journal_mode = WAL");

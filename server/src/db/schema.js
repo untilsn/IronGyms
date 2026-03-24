@@ -301,6 +301,50 @@ export default function createTables() {
       ON pt_bookings(status);
   `);
 
+  // ==================== EQUIPMENT ====================
+  // thiết bị phòng gym
+  db.exec(`
+  CREATE TABLE IF NOT EXISTS equipment (
+    id           INTEGER PRIMARY KEY AUTOINCREMENT,
+    name         TEXT    NOT NULL,
+    description  TEXT    DEFAULT NULL,
+    quantity     INTEGER DEFAULT 1,
+    status       TEXT    DEFAULT 'available',
+    purchased_at TEXT    DEFAULT NULL,
+    deleted_at   TEXT    DEFAULT NULL,
+    created_at   TEXT    DEFAULT (datetime('now')),
+    updated_at   TEXT    DEFAULT (datetime('now'))
+  );
+  CREATE INDEX IF NOT EXISTS idx_equipment_status
+    ON equipment(status);
+  CREATE INDEX IF NOT EXISTS idx_equipment_deleted
+    ON equipment(deleted_at);
+`);
+
+  // ==================== ANNOUNCEMENTS ====================
+  // thông báo broadcast cho tất cả
+  db.exec(`
+  CREATE TABLE IF NOT EXISTS announcements (
+    id         INTEGER PRIMARY KEY AUTOINCREMENT,
+    title      TEXT    NOT NULL,
+    content    TEXT    NOT NULL,
+    type       TEXT    DEFAULT 'info',
+    target     TEXT    DEFAULT 'all',
+    is_pinned  INTEGER DEFAULT 0,
+    start_date TEXT    DEFAULT NULL,
+    end_date   TEXT    DEFAULT NULL,
+    created_by INTEGER DEFAULT NULL REFERENCES users(id),
+    created_at TEXT    DEFAULT (datetime('now')),
+    updated_at TEXT    DEFAULT (datetime('now'))
+  );
+  CREATE INDEX IF NOT EXISTS idx_announcements_type
+    ON announcements(type);
+  CREATE INDEX IF NOT EXISTS idx_announcements_target
+    ON announcements(target);
+  CREATE INDEX IF NOT EXISTS idx_announcements_enddate
+    ON announcements(end_date);
+`);
+
   // ==================== CHECK INS ====================
   // lịch sử vào gym bằng QR
   db.exec(`
@@ -461,49 +505,5 @@ export default function createTables() {
       ON blogs(deleted_at);
   `);
 
-  console.log("✅ All 22 tables created successfully");
+  console.log("✅ All 24 tables created successfully");
 }
-
-```
-## Checklist 22 bảng
-Nhóm người dùng (3)
-  □ users
-  □ members
-  □ trainers
-
-Nhóm token (1)
-  □ tokens
-
-Nhóm sản phẩm (4)
-  □ class_categories
-  □ membership_plans
-  □ pt_packages
-  □ vouchers
-
-Nhóm giao dịch (3)
-  □ member_memberships
-  □ member_pt_packages
-  □ payments
-
-Nhóm lịch học (3)
-  □ classes
-  □ class_bookings
-  □ pt_bookings
-
-Nhóm hoạt động (2)
-  □ check_ins
-  □ notifications
-
-Nhóm chat (2)
-  □ conversations
-  □ messages
-
-Nhóm theo dõi (2)
-  □ member_metrics
-  □ trainer_reviews
-
-Nhóm blog (2)
-  □ blog_categories
-  □ blogs
-
-```;

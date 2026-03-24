@@ -1,10 +1,7 @@
 import bcrypt from "bcrypt";
-import env from "../config/env.config.JS";
-
-const salt = env.SALT;
 
 export const hashPassword = (password) => {
-  return bcrypt.hashSync(password, salt);
+  return bcrypt.hashSync(password, 10);
 };
 
 export const comparePassword = (password, hash) => {
