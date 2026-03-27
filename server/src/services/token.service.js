@@ -133,21 +133,19 @@ export const verifyForgotPasswordToken = (token) => {
   return record;
 };
 
-```
-src/
-├── utils/
-│   ├── crypto.util.js    → generateToken, generateUUID, getExpiresAt
-│   ├── jwt.util.js       → signAccessToken, verifyAccessToken
-│   ├── hash.util.js      → hashPassword, comparePassword
-│   ├── qr.util.js        → generateQrCode
-│   ├── slug.util.js      → generateSlug, generateUniqueSlug
-│   ├── error.util.js     → AppError, Errors
-│   └── date.util.js      → calcEndDate, today, formatDate...
-│
-└── services/
-    ├── token.service.js  → saveToken, verifyStoredToken
-    │                        generateRefreshToken
-    │                        generateVerifyEmailToken
-    │                        generateForgotPasswordToken
-    └── auth.service.js   → dùng token.service
-```;
+// src/
+// ├── utils/
+// │   ├── crypto.util.js    → generateToken, generateUUID, getExpiresAt
+// │   ├── jwt.util.js       → signAccessToken, verifyAccessToken
+// │   ├── hash.util.js      → hashPassword, comparePassword
+// │   ├── qr.util.js        → generateQrCode
+// │   ├── slug.util.js      → generateSlug, generateUniqueSlug
+// │   ├── error.util.js     → AppError, Errors
+// │   └── date.util.js      → calcEndDate, today, formatDate...
+// │
+// └── services/
+//     ├── token.service.js  → saveToken, verifyStoredToken
+//     │                        generateRefreshToken
+//     │                        generateVerifyEmailToken
+//     │                        generateForgotPasswordToken
+//     └── auth.service.js   → dùng token.service

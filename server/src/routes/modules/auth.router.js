@@ -29,26 +29,26 @@ router.post(
   validate(memberRegisterSchema),
   AuthController.memberRegister,
 );
-router.post("/refresh", AuthController.refreshToken);
-router.post("/logout", AuthController.logout);
+// router.post("/refresh", AuthController.refreshToken);
+// router.post("/logout", AuthController.logout);
 
-// cần đăng nhập
-router.get("/me", authenticate, AuthController.getMe);
-router.put(
-  "/change-password",
-  authenticate,
-  validate(changePasswordSchema),
-  AuthController.changePassword,
-);
-router.post(
-  "/forgot-password",
-  validate(forgotPasswordSchema),
-  AuthController.forgotPassword,
-);
-router.post(
-  "/reset-password",
-  validate(resetPasswordSchema),
-  AuthController.resetPassword,
-);
+// // cần đăng nhập
+// router.get("/me", authenticate, AuthController.getMe);
+// router.put(
+//   "/change-password",
+//   authenticate,
+//   validate(changePasswordSchema),
+//   AuthController.changePassword,
+// );
+// router.post(
+//   "/forgot-password",
+//   validate(forgotPasswordSchema),
+//   AuthController.forgotPassword,
+// );
+// router.post(
+//   "/reset-password",
+//   validate(resetPasswordSchema),
+//   AuthController.resetPassword,
+// );
 
 export default router;

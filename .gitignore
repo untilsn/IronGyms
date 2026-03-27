@@ -32,6 +32,10 @@ admin/dist/
 admin/build/
 server/dist/
 
+
+*.db-shm
+*.db-wal
+
 # =========================
 # Cache
 # =========================

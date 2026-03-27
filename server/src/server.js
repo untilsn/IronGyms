@@ -5,6 +5,7 @@ import env from "./config/env.config.js"; // biến môi trường
 import createTables from "./db/schema.js";
 import seedData from "./db/seed.js";
 import errorMiddleware from "./middlewares/error.middleware.js";
+import mainRouter from "./routes/main.router.js";
 // khởi tạo database — chạy trước khi làm bất cứ thứ gì
 createTables();
 seedData();
@@ -19,7 +20,7 @@ app.use(
     credentials: true,
   }),
 );
-
+app.use("/api", mainRouter);
 app.use(errorMiddleware);
 
 // khởi động server

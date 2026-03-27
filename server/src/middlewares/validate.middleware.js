@@ -7,7 +7,7 @@ export const validate = (schema) => {
 
     if (!result.success) {
       // lấy tất cả lỗi từ zod
-      const errors = result.error.errors.map((e) => e.message).join(", ");
+      const errors = result.error.issues.map((e) => e.message).join(", ");
 
       return next(new AppError(400, errors));
     }
