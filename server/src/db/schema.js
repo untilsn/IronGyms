@@ -1,4 +1,4 @@
-import db from "../config/database.config.js";
+import db from '../config/database.config.js';
 
 export default function createTables() {
   // ==================== USERS ====================
@@ -63,6 +63,51 @@ export default function createTables() {
       ON trainers(user_id);
     CREATE INDEX IF NOT EXISTS idx_trainers_deleted
       ON trainers(deleted_at);
+  `);
+
+  // ==================== SHIFTS ====================
+  // lưu ca làm việc của staff/pt
+  db.exec(`
+    CREATE TABLE IF NOT EXISTS shifts (
+      id         INTEGER PRIMARY KEY AUTOINCREMENT,
+      user_id    INTEGER NOT NULL REFERENCES users(id), -- staff/pt
+      date       TEXT    NOT NULL,
+      start_time TEXT    NOT NULL,                      -- '08:00'
+      end_time   TEXT    NOT NULL,                      -- '17:00'
+      status     TEXT    DEFAULT 'scheduled',           -- 'scheduled'|'completed'|'absent'
+      note       TEXT    DEFAULT NULL,
+      created_by INTEGER DEFAULT NULL REFERENCES users(id),
+      created_at TEXT    DEFAULT (datetime('now')),
+      updated_at TEXT    DEFAULT (datetime('now'))
+    );
+    CREATE INDEX IF NOT EXISTS idx_shifts_user
+      ON shifts(user_id);
+    CREATE INDEX IF NOT EXISTS idx_shifts_date
+      ON shifts(date);
+  `);
+
+  // ==================== SALARIES ====================
+  // lưu bảng lương hàng tháng của staff/pt
+  db.exec(`
+    CREATE TABLE IF NOT EXISTS salaries (
+      id         INTEGER PRIMARY KEY AUTOINCREMENT,
+      user_id    INTEGER NOT NULL REFERENCES users(id),
+      month      TEXT    NOT NULL,              -- '2025-01'
+      base       REAL    NOT NULL,              -- lương cơ bản
+      bonus      REAL    DEFAULT 0,             -- thưởng
+      deduction  REAL    DEFAULT 0,             -- khấu trừ
+      total      REAL    NOT NULL,              -- tổng = base + bonus - deduction
+      status     TEXT    DEFAULT 'pending',     -- 'pending'|'paid'
+      paid_at    TEXT    DEFAULT NULL,
+      note       TEXT    DEFAULT NULL,
+      created_by INTEGER DEFAULT NULL REFERENCES users(id),
+      created_at TEXT    DEFAULT (datetime('now')),
+      updated_at TEXT    DEFAULT (datetime('now'))
+    );
+    CREATE INDEX IF NOT EXISTS idx_salaries_user
+      ON salaries(user_id);
+    CREATE INDEX IF NOT EXISTS idx_salaries_month
+      ON salaries(month);
   `);
 
   // ==================== TOKENS ====================
@@ -304,46 +349,46 @@ export default function createTables() {
   // ==================== EQUIPMENT ====================
   // thiết bị phòng gym
   db.exec(`
-  CREATE TABLE IF NOT EXISTS equipment (
-    id           INTEGER PRIMARY KEY AUTOINCREMENT,
-    name         TEXT    NOT NULL,
-    description  TEXT    DEFAULT NULL,
-    quantity     INTEGER DEFAULT 1,
-    status       TEXT    DEFAULT 'available',
-    purchased_at TEXT    DEFAULT NULL,
-    deleted_at   TEXT    DEFAULT NULL,
-    created_at   TEXT    DEFAULT (datetime('now')),
-    updated_at   TEXT    DEFAULT (datetime('now'))
-  );
-  CREATE INDEX IF NOT EXISTS idx_equipment_status
-    ON equipment(status);
-  CREATE INDEX IF NOT EXISTS idx_equipment_deleted
-    ON equipment(deleted_at);
-`);
+    CREATE TABLE IF NOT EXISTS equipment (
+      id           INTEGER PRIMARY KEY AUTOINCREMENT,
+      name         TEXT    NOT NULL,
+      description  TEXT    DEFAULT NULL,
+      quantity     INTEGER DEFAULT 1,
+      status       TEXT    DEFAULT 'available',
+      purchased_at TEXT    DEFAULT NULL,
+      deleted_at   TEXT    DEFAULT NULL,
+      created_at   TEXT    DEFAULT (datetime('now')),
+      updated_at   TEXT    DEFAULT (datetime('now'))
+    );
+    CREATE INDEX IF NOT EXISTS idx_equipment_status
+      ON equipment(status);
+    CREATE INDEX IF NOT EXISTS idx_equipment_deleted
+      ON equipment(deleted_at);
+  `);
 
   // ==================== ANNOUNCEMENTS ====================
   // thông báo broadcast cho tất cả
   db.exec(`
-  CREATE TABLE IF NOT EXISTS announcements (
-    id         INTEGER PRIMARY KEY AUTOINCREMENT,
-    title      TEXT    NOT NULL,
-    content    TEXT    NOT NULL,
-    type       TEXT    DEFAULT 'info',
-    target     TEXT    DEFAULT 'all',
-    is_pinned  INTEGER DEFAULT 0,
-    start_date TEXT    DEFAULT NULL,
-    end_date   TEXT    DEFAULT NULL,
-    created_by INTEGER DEFAULT NULL REFERENCES users(id),
-    created_at TEXT    DEFAULT (datetime('now')),
-    updated_at TEXT    DEFAULT (datetime('now'))
-  );
-  CREATE INDEX IF NOT EXISTS idx_announcements_type
-    ON announcements(type);
-  CREATE INDEX IF NOT EXISTS idx_announcements_target
-    ON announcements(target);
-  CREATE INDEX IF NOT EXISTS idx_announcements_enddate
-    ON announcements(end_date);
-`);
+    CREATE TABLE IF NOT EXISTS announcements (
+      id         INTEGER PRIMARY KEY AUTOINCREMENT,
+      title      TEXT    NOT NULL,
+      content    TEXT    NOT NULL,
+      type       TEXT    DEFAULT 'info',
+      target     TEXT    DEFAULT 'all',
+      is_pinned  INTEGER DEFAULT 0,
+      start_date TEXT    DEFAULT NULL,
+      end_date   TEXT    DEFAULT NULL,
+      created_by INTEGER DEFAULT NULL REFERENCES users(id),
+      created_at TEXT    DEFAULT (datetime('now')),
+      updated_at TEXT    DEFAULT (datetime('now'))
+    );
+    CREATE INDEX IF NOT EXISTS idx_announcements_type
+      ON announcements(type);
+    CREATE INDEX IF NOT EXISTS idx_announcements_target
+      ON announcements(target);
+    CREATE INDEX IF NOT EXISTS idx_announcements_enddate
+      ON announcements(end_date);
+  `);
 
   // ==================== CHECK INS ====================
   // lịch sử vào gym bằng QR
@@ -505,5 +550,5 @@ export default function createTables() {
       ON blogs(deleted_at);
   `);
 
-  console.log("✅ All 24 tables created successfully");
+  console.log('✅ All 24 tables created successfully');
 }

@@ -1,5 +1,7 @@
-import { Router } from "express";
-// import { authenticate } from "../middlewares/auth.middleware.js";
+import { Router } from 'express';
+import authRouter from './modules/auth.router.js';
+import { authenticate } from '../middlewares/auth.middleware.js';
+import profileRouter from './modules/profile.router.js';
 // import {
 //   isAdmin,
 //   isAdminOrStaff,
@@ -8,7 +10,6 @@ import { Router } from "express";
 // } from "../middlewares/role.middleware.js";
 
 // import tất cả routers
-import authRouter from "./modules/auth.router.js";
 // import userRouter from "./modules/user.router.js";
 // import memberRouter from "./modules/member.router.js";
 // import trainerRouter from "./modules/trainer.router.js";
@@ -35,9 +36,12 @@ const mainRouter = Router();
 
 // ==================== PUBLIC ====================
 // không cần đăng nhập
-mainRouter.use("/auth", authRouter);
+mainRouter.use('/auth', authRouter);
 // mainRouter.use("/blogs", blogRouter); // đọc blog public
 // mainRouter.use("/announcements", announcementRouter); // đọc thông báo public
+
+// // ==================== LOGIN ====================
+mainRouter.use('/profile', authenticate, profileRouter); // đọc blog public
 
 // // ==================== ADMIN ONLY ====================
 // // chỉ admin
@@ -84,7 +88,6 @@ mainRouter.use("/auth", authRouter);
 
 // // ==================== MEMBER ONLY ====================
 // // chỉ member — client web
-// mainRouter.use("/member/profile", authenticate, isMember, memberRouter);
 // mainRouter.use(
 //   "/member/memberships",
 //   authenticate,
